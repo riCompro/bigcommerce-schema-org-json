@@ -1,0 +1,108 @@
+<!-- Scherma.org Start -->
+<script type="application/ld+json" id="product-schema">
+    {
+        "@context": "http://schema.org",
+        "@type": "Product", 
+        "name": "{{product.title}}", 
+        {{#if product.condition}}"itemCondition": "https://schema.org/{{product.condition}}Condition",{{/if}}
+        "image": "{{getImage product.main_image 'product_size' (cdn theme_settings.default_image_product)}}", 		
+        "brand": {
+            "@type": "Thing", 
+            "name": "{{product.brand.name}}", 
+            "url": "{{product.brand.url}}"
+        },
+        "description": {{{json product.description}}}, 
+        "sku": "{{product.sku}}",
+        "hasMerchantReturnPolicy": {
+            "@type": "MerchantReturnPolicy", 
+            "inStoreReturnsOffered": "True", 
+            "merchantReturnLink": "https://www.ricompro.it/assistenza/",
+            "merchantReturnDays": "14"
+        },
+        {{#if product.gtin}}"gtin": "{{product.gtin}}",{{/if}}
+        {{#if product.mpn}}"mpn": "{{product.mpn}}",{{/if}}
+        "url": "{{product.url}}",
+        {{#if product.weight}}"weight": "{{product.weight}}",{{/if}}
+        {{#if product.height}}"height": "{{product.height}}",{{/if}}
+        {{#if product.width}}"width": "{{product.width}}",{{/if}}
+        {{#if product.depth}}"depth": "{{product.depth}}",{{/if}}
+        {{#if product.price.price_range.max.with_tax.value '>' 0}}
+            "offers": [{
+                    "@type": "AggregateOffer",
+                    "highPrice": "{{product.price.price_range.max.with_tax.value}}",
+                    "lowPrice": "{{product.price.price_range.min.with_tax.value}}", 
+                    "priceCurrency": "{{currency_selector.active_currency_code}}",
+                {{#if product.pre_order}}
+                "availability": "http://schema.org/PreOrder"
+                {{else}}
+                    {{#if product.out_of_stock}}
+                    {{else}}
+                        "availability": "http://schema.org/InStock"
+                    {{/if}}
+                {{/if}}
+                },
+                {
+                    "@type": "Offer", 
+                    "price": "{{product.price.with_tax.value}}",
+                    "priceCurrency": "{{currency_selector.active_currency_code}}",
+                    "url": "{{product.url}}",
+                    "priceSpecification":{
+                        "@type": "PriceSpecification", 
+                        "maxPrice": "{{product.price.price_range.max.with_tax.formatted}}",
+                        "minPrice": "{{product.price.price_range.min.with_tax.formatted}}", 
+                        "valueAddedTaxIncluded": "True"
+                    }
+                }
+            ] 
+        {{else}}
+            "offers": {
+                "@type": "Offer",
+                "price": "{{product.price.with_tax.value}}",
+                "priceCurrency": "{{currency_selector.active_currency_code}}",
+                {{#if product.pre_order}}
+                "availability": "http://schema.org/PreOrder",
+                {{else}}
+                    {{#if product.out_of_stock}}
+                    {{else}}
+                        "availability": "http://schema.org/InStock",
+                    {{/if}}
+                {{/if}}
+                "url": "{{product.url}}"
+                
+            }
+        {{/if}}
+
+        {{#if product.num_reviews '>' 0}}
+        ,
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "{{product.rating}}",
+            "ratingCount": "{{product.num_reviews}}",
+            "reviewCount": "{{product.num_reviews}}"
+        }, 
+         "review": [
+             {{#each product.reviews.list}}
+             {{#if @index '>' 0}} , {{/if}}
+                {
+                  "@type": "Review",
+                  "datePublished": "{{date}}",
+                  "name": "{{title}}",
+                  "description": "{{text}}",
+                  "author": "{{name}}",
+                  "reviewRating": {
+                        "@type": "Rating",
+                        "ratingValue": "{{rating}}"
+                    }, 
+                    "itemReviewed": {
+                        "@type": "thing", 
+                        "name": "{{../../product.title}}"
+                    }
+                }
+            {{/each}}
+            ]
+        {{/if}}
+    }
+
+
+</script>
+<!-- Scherma.org END -->
