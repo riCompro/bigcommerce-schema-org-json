@@ -1,0 +1,64 @@
+<!-- INIZIO BREADCRUMBS -->
+<ul class="breadcrumbs" itemscope itemtype="http://schema.org/BreadcrumbList">
+    {{#each breadcrumbs}}
+
+        <li class="breadcrumb {{#if @last}}is-active{{/if}}" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            {{#if url}}
+
+                <a href="{{settings.secure_base_url}}{{url}}" class="breadcrumb-label hover-text-{{../../hoverColor}} txt-6" itemprop="item">
+                    <span itemprop="name" content="{{name}}">
+                        {{name}}
+                    </span>
+                </a>
+            {{else}}
+                {{#if ../../page_type '==' 'category'}}
+                <a href="{{../../../category.url}}" itemprop="item">
+                    <span class="bold txt-6 c-grey4 hover-text-{{../../hoverColor}}" itemprop="name" content="{{name}}">{{name}}
+                    </span>
+                </a>
+                {{/if}}
+
+                {{#if ../../page_type '==' 'blog'}}
+                <a href="{{../../../blog.url}}" itemprop="item">
+                    <span class="bold txt-6 c-grey4 hover-text-{{../../hoverColor}}" itemprop="name" content="{{name}}">{{name}}
+                    </span>
+                </a>
+                {{/if}}
+
+                {{#if ../../page_type '==' 'blog_post'}}
+                <a href="{{../../../blog.post.url}}" itemprop="item">
+                    <span class="bold txt-6 c-grey4 hover-text-{{../../hoverColor}}" itemprop="name" content="{{name}}">{{name}}
+                    </span>
+                </a>
+                {{/if}}
+
+                {{#if ../../page_type '==' 'product'}}
+                <a href="{{../../../product.url}}" itemprop="item">
+                    <span class="bold txt-6 c-grey4 hover-text-{{../../hoverColor}}" itemprop="name" content="{{name}}">
+                        {{name}}
+                    </span>
+                </a>
+                {{/if}}
+
+                {{#if ../../page_type '==' 'page'}}
+                    <a id="js-page-url" href="{{../../../page.url}}" itemprop="item">
+                        <span class="bold txt-6 c-grey4 hover-text-{{../../hoverColor}}" itemprop="name" content="{{name}}">{{name}}{{../../page.url}}
+                        </span>
+                    </a>
+                    <script type="text/javascript">
+                        var url= window.location.href;
+                        var link = document.getElementById('js-page-url'); 
+                        link.setAttribute('href', url)
+                    </script>
+                {{/if}}
+
+            {{/if}}
+            <meta itemprop="position" content="{{add @index 1}}" />
+        </li>
+
+    {{/each}}
+
+</ul>
+{{pages.url}}
+
+<!-- FINE BREADCRUMBS -->
